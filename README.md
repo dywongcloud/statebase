@@ -25,15 +25,15 @@ statebase/
 
 ```mermaid
 flowchart LR
-  TF[Terraform state JSON] --> Parser[@statebase/parser]
-  Parser --> Core[@statebase/core\nredaction + diff rules]
-  Core --> DB[@statebase/db\nPostgreSQL normalized tables]
-  DB --> API[Fastify API\nREST + SQL + OpenAPI]
-  API --> SDK[@statebase/sdk]
-  SDK --> Desktop[Tauri Desktop\nConnected Mode]
-  Parser --> DesktopLocal[Tauri Desktop\nLocal File Mode]
-  DesktopLocal --> LocalSQL[In-memory local SQL]
-  API --> Portals[Internal developer portals]
+  TF["Terraform state JSON"] --> Parser["@statebase/parser"]
+  Parser --> Core["@statebase/core<br/>redaction + diff rules"]
+  Core --> DB["@statebase/db<br/>PostgreSQL normalized tables"]
+  DB --> API["Fastify API<br/>REST + SQL + OpenAPI"]
+  API --> SDK["@statebase/sdk"]
+  SDK --> Desktop["Tauri Desktop<br/>Connected Mode"]
+  Parser --> DesktopLocal["Tauri Desktop<br/>Local File Mode"]
+  DesktopLocal --> LocalSQL["In-memory local SQL"]
+  API --> Portals["Internal developer portals"]
 ```
 
 Layering is intentionally strict: the parser contains no database code, core contains domain logic only, db owns persistence and migrations, api owns HTTP/auth/OpenAPI, sdk owns client calls, and the desktop consumes both the SDK and parser.
@@ -373,4 +373,3 @@ pnpm --filter @statebase/desktop test
 6. Add DuckDB WASM or SQLite local mode for larger offline state files.
 7. Add resource ownership, cost metadata, and policy-as-code findings.
 8. Add hosted SaaS multi-tenant deployment hardening and self-hosted Helm charts.
-# statebase
