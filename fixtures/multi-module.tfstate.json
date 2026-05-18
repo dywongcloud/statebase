@@ -1,0 +1,57 @@
+{
+  "version": 4,
+  "terraform_version": "1.6.0",
+  "serial": 7,
+  "lineage": "lineage-multi-module",
+  "outputs": {
+    "vpc_id": { "value": "vpc-123", "type": "string", "sensitive": false }
+  },
+  "resources": [
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "attributes": {
+            "id": "vpc-123",
+            "cidr_block": "10.0.0.0/16",
+            "tags": { "Environment": "prod" }
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "module": "module.app",
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "attributes": {
+            "id": "i-app0",
+            "instance_type": "t3.small",
+            "tags": { "Environment": "prod", "App": "statebase" }
+          },
+          "dependencies": ["module.network.aws_vpc.main"],
+          "sensitive_attributes": []
+        },
+        {
+          "index_key": 1,
+          "attributes": {
+            "id": "i-app1",
+            "instance_type": "t3.small",
+            "tags": { "Environment": "prod", "App": "statebase" }
+          },
+          "dependencies": ["module.network.aws_vpc.main"],
+          "sensitive_attributes": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "statebase",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "build": "pnpm -r --sort build",
+    "dev:api": "pnpm --filter @statebase/core build && pnpm --filter @statebase/parser build && pnpm --filter @statebase/db build && pnpm --filter @statebase/api dev",
+    "dev:desktop": "pnpm --filter @statebase/core build && pnpm --filter @statebase/parser build && pnpm --filter @statebase/sdk build && pnpm --filter @statebase/ui build && pnpm --filter @statebase/desktop tauri:dev",
+    "dev:web": "pnpm --filter @statebase/sdk build && pnpm --filter @statebase/web dev",
+    "migrate": "pnpm --filter @statebase/db migrate",
+    "seed": "pnpm --filter @statebase/db seed",
+    "test": "pnpm build && vitest run --config vitest.workspace.ts",
+    "test:watch": "vitest --config vitest.workspace.ts",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

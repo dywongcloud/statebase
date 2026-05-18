@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+.git
+apps/desktop/src-tauri/target
+.env
+*.log

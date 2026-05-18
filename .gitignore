@@ -1,0 +1,9 @@
+node_modules
+dist
+.turbo
+.DS_Store
+.env
+*.log
+coverage
+apps/desktop/src-tauri/target
+pnpm-lock.yaml.tmp

@@ -1,0 +1,57 @@
+{
+  "version": 4,
+  "terraform_version": "1.6.0",
+  "serial": 3,
+  "lineage": "lineage-sensitive",
+  "outputs": {
+    "db_password": {
+      "value": "not-a-real-password",
+      "type": "string",
+      "sensitive": true
+    },
+    "api_endpoint": {
+      "value": "https://api.example.test",
+      "type": "string",
+      "sensitive": false
+    }
+  },
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "primary",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "attributes": {
+            "id": "db-sensitive",
+            "username": "app",
+            "password": "not-a-real-password",
+            "connection_string": "postgres://app:not-a-real-password@db.example.test:5432/app",
+            "tags": {
+              "Environment": "prod"
+            }
+          },
+          "sensitive_attributes": [["password"], ["connection_string"]]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "kubernetes_secret",
+      "name": "app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "attributes": {
+            "metadata": [{ "name": "app-secret", "namespace": "default" }],
+            "data": {
+              "api_key": "ghp_thisIsAFakeTokenForTestingOnly123456"
+            }
+          },
+          "sensitive_attributes": [["data"]]
+        }
+      ]
+    }
+  ]
+}

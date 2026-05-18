@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: statebase-postgres
+    environment:
+      POSTGRES_USER: statebase
+      POSTGRES_PASSWORD: statebase
+      POSTGRES_DB: statebase
+    ports:
+      - "5432:5432"
+    volumes:
+      - statebase-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U statebase -d statebase"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: statebase-api
+    environment:
+      DATABASE_URL: postgres://statebase:statebase@postgres:5432/statebase
+      API_HOST: 0.0.0.0
+      API_PORT: 4000
+      LOG_LEVEL: info
+      QUERY_TIMEOUT_MS: 5000
+      QUERY_MAX_ROWS: 5000
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  statebase-postgres:
